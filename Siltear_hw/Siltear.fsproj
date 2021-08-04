@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--*************************************-->
+<!--   File    : Siltear.fsproj          -->
+<!--   Format  : TopoR Project file      -->
+<!--   Version : 2                       -->
+<!--   Program : TopoR 8 Layer 7.0.18661 -->
+<!--   Date    : Saturday, July 10, 2021 -->
+<!--   Time    : 15:48                   -->
+<!--*************************************-->
+
+<Project>
+   <Version current="2"/>
+   <GUID>{4F261B1B-76B7-45A0-B1D2-D40423B78A82}</GUID>
+   <Documents>
+      <Section name="PCB" isExpanded="false">
+         <File path=".\Siltear.fsx" isopened="1" dateChange="2021-07-07 23:20:42"/>
+      </Section>
+      <Section name="AutoRouting" isExpanded="false"/>
+   </Documents>
+</Project>
