@@ -8,7 +8,7 @@
 #pragma once
 
 // ==== General ====
-#define APP_NAME            "Monster"
+#define APP_NAME            "Dragon"
 
 // Version of PCB
 #define PCB_VER                 1

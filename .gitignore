@@ -1,3 +1,4 @@
 *.xml
 Siltear_fw/Release/
 Siltear_hw/Siltear-backups/
+Siltear_fw/Debug/

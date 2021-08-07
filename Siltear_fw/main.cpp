@@ -7,6 +7,8 @@
 #include "Sequences.h"
 #include "kl_i2c.h"
 #include "lassi.h"
+#include "radio_lvl1.h"
+
 #endif
 #if 1 // ======================== Variables & prototypes =======================
 // Forever
@@ -24,15 +26,30 @@ LedSmooth_t Led{PWM16_PIN};
 static TmrKL_t TmrOneSecond {TIME_MS2I(999), evtIdEverySecond, tktPeriodic}; // Measure battery periodically
 #endif
 
+Spi_t ISpi{SPI1};
+
 int main(void) {
 #if 1 // ==== Iwdg, Clk, Os, EvtQ, Uart ====
     // Start Watchdog. Will reset in main thread by periodic 1 sec events.
 //    Iwdg::InitAndStart(4500);
 //    Iwdg::DisableInDebug();
     // Setup clock frequency
-//    Clk.SetCoreClk(cclk48MHz);
-//    // 48MHz clock
-//    Clk.SetupSai1Qas48MhzSrc();
+    Clk.EnablePrefetch();
+    if(Clk.EnableHSE() == retvOk) {
+        Clk.SetVoltageRange(mvrHiPerf);
+        Clk.SetupFlashLatency(48, mvrHiPerf);
+        Clk.SetupPllSrc(pllsrcHse);
+        Clk.SetupPll(8, 2, 2); // 12MHz / 1 = 12; 12 * 8 / 2 => 48
+        Clk.SetupBusDividers(ahbDiv1, apbDiv1, apbDiv1);
+        if(Clk.EnablePLL() == retvOk) {
+            Clk.EnablePllROut();
+            Clk.SwitchToPLL();
+            // 48 MHz clock is utilized by Random Number Generator
+            Clk.EnablePllQOut();
+            Clk.SetupPllQas48MhzSrc();
+        }
+    }
+
     Clk.UpdateFreqValues();
     // Init OS
     halInit();
@@ -46,12 +63,18 @@ int main(void) {
     Clk.PrintFreqs();
 #endif
 
-    Led.Init();
+    // Seed pseudorandom generator with truly random seed
+    Random::TrueInit();
+    Random::SeedWithTrue();
+    Random::TrueDeinit();
 
-    const LedSmoothChunk_t *p = lsqOk;
-    Led.StartOrRestart(p);
+    Led.Init();
+    Led.StartOrRestart(lsqOk);
     Lassi::Init();
 //    PinUsbDetect.Init();
+
+    // ==== Radio ====
+    Radio.Init();
 
     TmrOneSecond.StartOrRestart();
 
