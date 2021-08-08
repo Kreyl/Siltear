@@ -39,11 +39,14 @@ static void rLvl1Thread(void *arg) {
 void rLevel1_t::ITask() {
     while(true) {
         RMsg_t Msg = RMsgQ.Fetch(TIME_IMMEDIATE);
-        if(Msg.ID != 0) rPkt.Clr = Msg.Clr;
+        if(Msg.Chnl != 0xFF) {
+            rPkt.Clr = Msg.Clr;
+            rPkt.Chnl = Msg.Chnl;;
+        }
         // Transmit
         CC.Recalibrate();
         CC.Transmit(&rPkt, RPKT_LEN);
-        chThdSleepMilliseconds(180);
+        chThdSleepMilliseconds(90);
     } // while
 }
 #endif // task

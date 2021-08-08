@@ -51,7 +51,7 @@ static void LassiThd(void *arg) {
             if(i == ActiveChnlID) {
                 Clr = ClrTbl[ActiveClrID];
                 Printf("%c; ", (ActiveClrID == 0)? 'R' : (ActiveClrID == 1)? 'G' : 'B');
-                Radio.RMsgQ.SendNowOrExit(RMsg_t(Clr));
+                Radio.RMsgQ.SendNowOrExit(RMsg_t(Clr, ActiveChnlID));
             }
             // Non-active chnl
             else {

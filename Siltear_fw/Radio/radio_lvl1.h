@@ -19,8 +19,10 @@
 #if 1 // =========================== Pkt_t =====================================
 struct rPkt_t  {
     Color_t Clr;
+    uint8_t Chnl;
     rPkt_t& operator = (const rPkt_t &Right) {
         Clr = Right.Clr;
+        Chnl = Right.Chnl;
         return *this;
     }
 //    void Print() { Printf("%d %d %d %d %d %d; %X\r", Ch[0],Ch[1],Ch[2],Ch[3],R1, R2, Btns); }
@@ -34,19 +36,19 @@ struct rPkt_t  {
 
 struct RMsg_t {
     Color_t Clr;
-    uint32_t ID;
+    uint8_t Chnl;
     RMsg_t& operator = (const RMsg_t &Right) {
         Clr = Right.Clr;
-        ID = Right.ID;
+        Chnl = Right.Chnl;
         return *this;
     }
     RMsg_t() {
         Clr = clBlack;
-        ID = 0;
+        Chnl = 0xFF;
     }
-    RMsg_t(Color_t &AClr)  {
+    RMsg_t(Color_t &AClr, uint8_t AChnl)  {
         Clr = AClr;
-        ID = 1;
+        Chnl = AChnl;
     }
 } __attribute__((__packed__));
 
